@@ -1,0 +1,21 @@
+.Board {
+  display: flex;
+  width: 430px;
+  height: 430px;
+  flex-wrap: wrap;
+  background-color: #fff;
+  justify-content: space-between;
+  align-content: space-between;
+  margin: auto;
+  gap: 5px;
+}
+
+.blink {
+  animation: blinker 0.5s linear infinite;
+}
+
+@keyframes blinker {
+  70% {
+    opacity: 0;
+  }
+}
