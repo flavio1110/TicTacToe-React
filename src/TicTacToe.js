@@ -26,8 +26,13 @@ const TicTacToe = () => {
     }
   };
 
-  const handleReset = () => {
+  const handlePlainAgain = () => {
     setGameRound(gameRound + 1);
+  };
+
+  const handleReset = () => {
+    setGameRound(0);
+    setPlayers(initialPlayers);
   };
 
   return (
@@ -35,7 +40,7 @@ const TicTacToe = () => {
       <h2>TIC-TAC-TOE</h2>
       <ScoreBoard players={players} />
       <div className={styles.actions}>
-        <button onClick={handleReset}>Play again</button>
+        <button onClick={handlePlainAgain}>Play again</button>
         <button onClick={handleReset}>Reset Score board</button>
       </div>
       <Board setWinner={setWinner} gameRound={gameRound} />
