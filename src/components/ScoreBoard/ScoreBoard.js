@@ -1,7 +1,9 @@
 import React from "react";
+import { useTicTacToeContext } from "../../TicTacToeContext";
 import styles from "./ScoreBoard.module.scss";
 
-function ScoreBoard({ players }) {
+const ScoreBoard = () => {
+  const { players } = useTicTacToeContext();
   return (
     <div className={styles.scoreBoard}>
       {players.map((p) => (
@@ -12,6 +14,6 @@ function ScoreBoard({ players }) {
       ))}
     </div>
   );
-}
+};
 
 export default ScoreBoard;

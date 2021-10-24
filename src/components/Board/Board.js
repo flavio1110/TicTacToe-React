@@ -1,55 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import BoardItem from "../BoardItem/BoardItem";
 import styles from "./Board.module.scss";
-import {
-  getInitialBoard,
-  cloneBoardMap,
-  isThereAWinner,
-} from "../../Services/BoardMapServices";
+import { useTicTacToeContext } from "../../TicTacToeContext";
 
-const Board = ({ setWinner, gameRound }) => {
-  const firstPlayerSymbol = "O";
-  const secondPlayerSymbol = "X";
-
-  const [currentSymbol, setCurrentSymbol] = useState(firstPlayerSymbol);
-  const [boardMap, setBoardMap] = useState(getInitialBoard());
-  const [boardDisabled, setBoardDisabled] = useState(false);
-
-  useEffect(() => {
-    setBoardMap(getInitialBoard());
-    setCurrentSymbol(firstPlayerSymbol);
-    setBoardDisabled(false);
-  }, [gameRound]);
-
-  const setSelected = (element) => {
-    if (element.selected || boardDisabled) return;
-
-    const newMap = cloneBoardMap(boardMap);
-    const selectedElement = newMap[element.row][element.column];
-
-    selectedElement.currentSymbol = currentSymbol;
-    selectedElement.selected = true;
-    const someoneWon = isThereAWinner(newMap);
-    if (someoneWon) {
-      setWinner(currentSymbol);
-      setBoardDisabled(true);
-    } else {
-      setCurrentSymbol(
-        currentSymbol === secondPlayerSymbol
-          ? firstPlayerSymbol
-          : secondPlayerSymbol
-      );
-    }
-
-    setBoardMap(newMap);
-  };
+const Board = () => {
+  const { boardMap, setSelected, gameIsActive } = useTicTacToeContext();
 
   return (
-    <div className={`${styles.Board} ${boardDisabled ? styles.blink : ""}`}>
+    <div className={`${styles.Board} ${gameIsActive ? "" : styles.blink}`}>
       {boardMap.map((column) =>
         column.map((element) => (
           <BoardItem
-            key={`${gameRound}-${element.row}x${element.column}`}
+            key={`${element.row}x${element.column}`}
             element={element}
             setSelected={!element.selected ? setSelected : null}
           />
