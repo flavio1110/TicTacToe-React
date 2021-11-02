@@ -10,27 +10,28 @@ const initialPlayers = [
   { symbol: "O", score: 0 },
 ];
 
+const firstPlayerSymbol = "O";
+const secondPlayerSymbol = "X";
+const initialBoard = getInitialBoard();
+
 const Context = createContext();
 
 const TicTacToeProvider = ({ children }) => {
-  const firstPlayerSymbol = "O";
-  const secondPlayerSymbol = "X";
-
   const [currentSymbol, setCurrentSymbol] = useState(firstPlayerSymbol);
-  const [boardMap, setBoardMap] = useState(getInitialBoard());
+  const [boardMap, setBoardMap] = useState(initialBoard);
   const [gameIsActive, setGameIsActive] = useState(true);
   const [players, setPlayers] = useState(initialPlayers);
 
   const plainAgain = useCallback(() => reset(), []);
   const resetScoreBoard = useCallback(() => reset(true), []);
 
-  const reset = (resetScore) => {
+  const reset = useCallback((resetScore) => {
     setCurrentSymbol(firstPlayerSymbol);
-    setBoardMap(getInitialBoard());
+    setBoardMap(initialBoard);
     setGameIsActive(true);
 
     if (resetScore) setPlayers(initialPlayers);
-  };
+  }, []);
 
   const setWinner = (symbol) => {
     const newPlayers = players.map((p) => {
@@ -57,7 +58,7 @@ const TicTacToeProvider = ({ children }) => {
     if (someoneWon) {
       setWinner(currentSymbol);
       setGameIsActive(false);
-      setBoardMap(getInitialBoard());
+      setBoardMap(initialBoard);
     } else {
       setCurrentSymbol(
         currentSymbol === secondPlayerSymbol
