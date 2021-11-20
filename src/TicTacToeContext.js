@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState } from "react";
 import {
   getInitialBoard,
   cloneBoardMap,
@@ -12,26 +12,25 @@ const initialPlayers = [
 
 const firstPlayerSymbol = "O";
 const secondPlayerSymbol = "X";
-const initialBoard = getInitialBoard();
 
 const Context = createContext();
 
 const TicTacToeProvider = ({ children }) => {
   const [currentSymbol, setCurrentSymbol] = useState(firstPlayerSymbol);
-  const [boardMap, setBoardMap] = useState(initialBoard);
+  const [boardMap, setBoardMap] = useState(getInitialBoard());
   const [gameIsActive, setGameIsActive] = useState(true);
   const [players, setPlayers] = useState(initialPlayers);
 
-  const plainAgain = useCallback(() => reset(), []);
-  const resetScoreBoard = useCallback(() => reset(true), []);
+  const plainAgain = () => reset();
+  const resetScoreBoard = () => reset(true);
 
-  const reset = useCallback((resetScore) => {
+  const reset = (resetScore) => {
     setCurrentSymbol(firstPlayerSymbol);
-    setBoardMap(initialBoard);
+    setBoardMap(getInitialBoard());
     setGameIsActive(true);
 
     if (resetScore) setPlayers(initialPlayers);
-  }, []);
+  };
 
   const setWinner = (symbol) => {
     const newPlayers = players.map((p) => {
@@ -58,7 +57,6 @@ const TicTacToeProvider = ({ children }) => {
     if (someoneWon) {
       setWinner(currentSymbol);
       setGameIsActive(false);
-      setBoardMap(initialBoard);
     } else {
       setCurrentSymbol(
         currentSymbol === secondPlayerSymbol
